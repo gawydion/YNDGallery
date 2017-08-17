@@ -9,8 +9,12 @@ import android.content.Context;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ArrayAdapter;
-        import android.widget.TextView;
-        import java.util.List;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 class PhotoInfoAdapter extends ArrayAdapter<PhotoInfo> {
     Context mcontext;
@@ -33,6 +37,13 @@ class PhotoInfoAdapter extends ArrayAdapter<PhotoInfo> {
         Integer no = position;
         TextView number = (TextView) row.findViewById(R.id.photoInfoNo);
         number.setText(no.toString());
+
+        //https://unsplash.it/50/50?image=0
+        //http://square.github.io/picasso/
+
+        ImageView imageView = (ImageView) row.findViewById(R.id.photoInfoImage);
+
+        Picasso.with(mcontext).load("https://unsplash.it/100/100?image=" + position).into(imageView);
 
         //TextView title = (TextView) row.findViewById(R.id.title);
         //title.setText(getItem(position).title);
