@@ -1,8 +1,11 @@
 package com.example.marcin.yndgallery;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         Gson gson = new GsonBuilder().setLenient().create();
 
         // Retrofit - obsługuje zapytania HTTP
@@ -45,14 +50,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PhotoInfo>> call, Response<List<PhotoInfo>> response) {
 
-                //Toast.makeText(getApplicationContext(), response.body().get(0).getAuthor().toString(), Toast.LENGTH_LONG).show();
-
                 ListView listView = (ListView) findViewById(R.id.mainList);
 
-
-
                 listView.setAdapter(new PhotoInfoAdapter(getApplicationContext(), PhotoInfoAdapter.addAuthorIndex(response.body())));
-
             }
 
             @Override
@@ -61,6 +61,18 @@ public class MainActivity extends AppCompatActivity {
             }});
 
 
+        ListView listView = (ListView) findViewById(R.id.mainList);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
+
+                //TODO dodać id, authorIndex, authorName
+
+                startActivity(intent);
+            }
+        });
 
     }
 
