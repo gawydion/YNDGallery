@@ -45,10 +45,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<PhotoInfo>> call, Response<List<PhotoInfo>> response) {
 
-                Toast.makeText(getApplicationContext(), response.body().get(0).getAuthor().toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), response.body().get(0).getAuthor().toString(), Toast.LENGTH_LONG).show();
 
                 ListView listView = (ListView) findViewById(R.id.mainList);
-                listView.setAdapter(new PhotoInfoAdapter(getApplicationContext(), response.body()));
+
+
+
+                listView.setAdapter(new PhotoInfoAdapter(getApplicationContext(), PhotoInfoAdapter.addAuthorIndex(response.body())));
 
             }
 

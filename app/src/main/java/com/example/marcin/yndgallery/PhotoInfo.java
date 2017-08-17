@@ -9,6 +9,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class PhotoInfo {
 
+    //potrzebny do ogarnięcia indeksowania zdjęc danego autora
+    private Integer authorIndex = 0;
+
+    //reszta do retrofita
     @SerializedName("format")
     @Expose
     private String format;
@@ -33,6 +37,16 @@ public class PhotoInfo {
     @SerializedName("post_url")
     @Expose
     private String postUrl;
+
+
+
+    public void setAuthorIndex(Integer authorIndex) {
+        this.authorIndex = authorIndex;
+    }
+
+    public Integer getAuthorIndex() {
+        return authorIndex;
+    }
 
     public String getFormat() {
         return format;
