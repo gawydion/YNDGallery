@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
                 authors = new String[response.body().size()];
                 authors = getAuthors(PhotoInfoAdapter.addAuthorIndex(response.body()));
-
-                //Toast.makeText(getApplicationContext(), authors[0].toString() + " #" + authorIndexes[0].toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -72,15 +70,6 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
-
-                String authorName;
-                String authorIndex;
-
-                TextView authorTextView = (TextView) view.findViewById(R.id.photoInfoAuthor);
-                TextView indexTextView = (TextView) view.findViewById(R.id.photoInfoNo);
-
-                authorName = authorTextView.getText().toString();
-                authorIndex = indexTextView.getText().toString();
 
                 intent.putExtra("authors", authors);
                 intent.putExtra("indexes", authorIndexes);

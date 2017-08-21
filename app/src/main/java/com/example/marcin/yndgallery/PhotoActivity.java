@@ -35,12 +35,8 @@ public class PhotoActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Integer id = intent.getIntExtra("id", -1);
-
         String authors[] = intent.getStringArrayExtra("authors");
         int[] authorIndexes = intent.getIntArrayExtra("indexes");
-
-        //String author = intent.getStringExtra("author");
-        //String index = intent.getStringExtra("index");
 
         PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
         getSupportActionBar().hide();
@@ -49,6 +45,9 @@ public class PhotoActivity extends AppCompatActivity {
 
         TextView label = (TextView) findViewById(R.id.photoDetailDescription);
         label.setText(authors[id] +" #"+ authorIndexes[id]);
+
+        //TODO add width x height
+        //TODO swipe  -> id +1
 
     }
 }
