@@ -35,8 +35,12 @@ public class PhotoActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Integer id = intent.getIntExtra("id", -1);
-        String author = intent.getStringExtra("author");
-        String index = intent.getStringExtra("index");
+
+        String authors[] = intent.getStringArrayExtra("authors");
+        int[] authorIndexes = intent.getIntArrayExtra("indexes");
+
+        //String author = intent.getStringExtra("author");
+        //String index = intent.getStringExtra("index");
 
         PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
         getSupportActionBar().hide();
@@ -44,7 +48,7 @@ public class PhotoActivity extends AppCompatActivity {
         Picasso.with(this).load("https://unsplash.it/500?image=" + id).into(photoView);
 
         TextView label = (TextView) findViewById(R.id.photoDetailDescription);
-        label.setText(author +" #"+ index);
+        label.setText(authors[id] +" #"+ authorIndexes[id]);
 
     }
 }

@@ -26,7 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    //
+    int authorIndexes[];
+    String authors[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         Gson gson = new GsonBuilder().setLenient().create();
 
-        // Retrofit - obsługuje zapytania HTTP
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitAPI.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -50,15 +50,21 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<PhotoInfo>> call, Response<List<PhotoInfo>> response) {
 
                 ListView listView = (ListView) findViewById(R.id.mainList);
-
                 listView.setAdapter(new PhotoInfoAdapter(getApplicationContext(), PhotoInfoAdapter.addAuthorIndex(response.body())));
+
+                authorIndexes = new int[response.body().size()];
+                authorIndexes = getAuthorIndexes(PhotoInfoAdapter.addAuthorIndex(response.body()));
+
+                authors = new String[response.body().size()];
+                authors = getAuthors(PhotoInfoAdapter.addAuthorIndex(response.body()));
+
+                //Toast.makeText(getApplicationContext(), authors[0].toString() + " #" + authorIndexes[0].toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<List<PhotoInfo>> call, Throwable t) {
 
             }});
-
 
         final ListView listView = (ListView) findViewById(R.id.mainList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 authorName = authorTextView.getText().toString();
                 authorIndex = indexTextView.getText().toString();
 
-                intent.putExtra("author", authorName);
-                intent.putExtra("index", authorIndex);
+                intent.putExtra("authors", authors);
+                intent.putExtra("indexes", authorIndexes);
                 intent.putExtra("id", position);
 
                 startActivity(intent);
@@ -85,6 +91,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    public String[] getAuthors(List<PhotoInfo> photoInfoList){
+
+        String[] authors = new String[photoInfoList.size()];
+
+        for(int i = 0; i<photoInfoList.size();i++){
+            authors[i] = photoInfoList.get(i).getAuthor();
+        }
+
+        return authors;
+    }
+
+    public int[] getAuthorIndexes(List<PhotoInfo> photoInfoList){
+
+        int[] indexes = new int[photoInfoList.size()] ;
+
+        for(int i = 0; i<photoInfoList.size();i++){
+            indexes[i] = photoInfoList.get(i).getAuthorIndex();
+        }
+
+        return indexes;
+    }
+
 
 }
 
