@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -61,14 +60,25 @@ public class MainActivity extends AppCompatActivity {
             }});
 
 
-        ListView listView = (ListView) findViewById(R.id.mainList);
+        final ListView listView = (ListView) findViewById(R.id.mainList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
 
-                //TODO dodać id, authorIndex, authorName
+                String authorName;
+                String authorIndex;
+
+                TextView authorTextView = (TextView) view.findViewById(R.id.photoInfoAuthor);
+                TextView indexTextView = (TextView) view.findViewById(R.id.photoInfoNo);
+
+                authorName = authorTextView.getText().toString();
+                authorIndex = indexTextView.getText().toString();
+
+                intent.putExtra("author", authorName);
+                intent.putExtra("index", authorIndex);
+                intent.putExtra("id", position);
 
                 startActivity(intent);
             }
