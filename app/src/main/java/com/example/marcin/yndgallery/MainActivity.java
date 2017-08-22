@@ -27,6 +27,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
 
     int authorIndexes[];
+    int widths[];
+    int heights[];
     String authors[];
 
     @Override
@@ -55,6 +57,12 @@ public class MainActivity extends AppCompatActivity {
                 authorIndexes = new int[response.body().size()];
                 authorIndexes = getAuthorIndexes(PhotoInfoAdapter.addAuthorIndex(response.body()));
 
+                widths = new int[response.body().size()];
+                widths = getWidths(PhotoInfoAdapter.addAuthorIndex(response.body()));
+
+                heights = new int[response.body().size()];
+                heights = getHeights(PhotoInfoAdapter.addAuthorIndex(response.body()));
+
                 authors = new String[response.body().size()];
                 authors = getAuthors(PhotoInfoAdapter.addAuthorIndex(response.body()));
             }
@@ -73,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
                 intent.putExtra("authors", authors);
                 intent.putExtra("indexes", authorIndexes);
+                intent.putExtra("widths", widths);
+                intent.putExtra("heights", heights);
                 intent.putExtra("id", position);
 
                 startActivity(intent);
@@ -98,6 +108,28 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i<photoInfoList.size();i++){
             indexes[i] = photoInfoList.get(i).getAuthorIndex();
+        }
+
+        return indexes;
+    }
+
+    public int[] getWidths(List<PhotoInfo> photoInfoList){
+
+        int[] indexes = new int[photoInfoList.size()] ;
+
+        for(int i = 0; i<photoInfoList.size();i++){
+            indexes[i] = photoInfoList.get(i).getWidth();
+        }
+
+        return indexes;
+    }
+
+    public int[] getHeights(List<PhotoInfo> photoInfoList){
+
+        int[] indexes = new int[photoInfoList.size()] ;
+
+        for(int i = 0; i<photoInfoList.size();i++){
+            indexes[i] = photoInfoList.get(i).getHeight();
         }
 
         return indexes;

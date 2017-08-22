@@ -37,6 +37,8 @@ public class PhotoActivity extends AppCompatActivity {
         Integer id = intent.getIntExtra("id", -1);
         String authors[] = intent.getStringArrayExtra("authors");
         int[] authorIndexes = intent.getIntArrayExtra("indexes");
+        int[] widths = intent.getIntArrayExtra("widths");
+        int[] heights = intent.getIntArrayExtra("heights");
 
         PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
         getSupportActionBar().hide();
@@ -44,9 +46,8 @@ public class PhotoActivity extends AppCompatActivity {
         Picasso.with(this).load("https://unsplash.it/500?image=" + id).into(photoView);
 
         TextView label = (TextView) findViewById(R.id.photoDetailDescription);
-        label.setText(authors[id] +" #"+ authorIndexes[id]);
+        label.setText(authors[id] +" #"+ authorIndexes[id]+ " Size: " + widths[id] + "x" + heights[id]);
 
-        //TODO add width x height
         //TODO swipe  -> id +1
 
     }
