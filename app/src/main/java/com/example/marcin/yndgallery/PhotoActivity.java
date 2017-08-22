@@ -49,6 +49,8 @@ public class PhotoActivity extends AppCompatActivity {
         widths = intent.getIntArrayExtra("widths");
         heights = intent.getIntArrayExtra("heights");
 
+        final int maxId = authors.length;
+
         getSupportActionBar().hide();
 
         setPhoto(id);
@@ -74,11 +76,13 @@ public class PhotoActivity extends AppCompatActivity {
                             if (diffX > 0) {
 
                                 id--;
+                                if(id==-1) id = maxId;
                                 setPhoto(id);
 
                             } else {
 
                                 id++;
+                                if(id==maxId+1) id = 0;
                                 setPhoto(id);
 
                             }
