@@ -38,8 +38,6 @@ public class PhotoInfo {
     @Expose
     private String postUrl;
 
-
-
     public void setAuthorIndex(Integer authorIndex) {
         this.authorIndex = authorIndex;
     }

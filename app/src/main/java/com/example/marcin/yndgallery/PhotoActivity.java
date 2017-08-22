@@ -57,7 +57,6 @@ public class PhotoActivity extends AppCompatActivity {
 
         PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
 
-        //TODO dodac przeskakiwanie do ostatniego/pierwszego
         photoView.setOnSingleFlingListener(new OnSingleFlingListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -76,13 +75,13 @@ public class PhotoActivity extends AppCompatActivity {
                             if (diffX > 0) {
 
                                 id--;
-                                if(id==-1) id = maxId;
+                                if (id == -1) id = maxId;
                                 setPhoto(id);
 
                             } else {
 
                                 id++;
-                                if(id==maxId+1) id = 0;
+                                if (id == maxId + 1) id = 0;
                                 setPhoto(id);
 
                             }
@@ -93,17 +92,18 @@ public class PhotoActivity extends AppCompatActivity {
                     exception.printStackTrace();
                 }
                 return result;
-            }});
+            }
+        });
     }
 
-    public void setPhoto(int newId){
+    public void setPhoto(int newId) {
 
         PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
 
         Picasso.with(this).load("https://unsplash.it/500?image=" + newId).into(photoView);
 
         TextView label = (TextView) findViewById(R.id.photoDetailDescription);
-        label.setText(authors[newId] +" #"+ authorIndexes[newId]+ " Size: " + widths[newId] + "x" + heights[newId]);
+        label.setText(authors[newId] + " #" + authorIndexes[newId] + " Size: " + widths[newId] + "x" + heights[newId]);
 
     }
 }
