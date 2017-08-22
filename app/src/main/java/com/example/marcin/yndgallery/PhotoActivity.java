@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.OnSingleFlingListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,6 +30,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PhotoActivity extends AppCompatActivity {
 
+    Integer id;// = intent.getIntExtra("id", -1);
+    String authors[];// = intent.getStringArrayExtra("authors");
+    int[] authorIndexes;// = intent.getIntArrayExtra("indexes");
+    int[] widths;// = intent.getIntArrayExtra("widths");
+    int[] heights;// = intent.getIntArrayExtra("heights");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,21 +43,63 @@ public class PhotoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Integer id = intent.getIntExtra("id", -1);
-        String authors[] = intent.getStringArrayExtra("authors");
-        int[] authorIndexes = intent.getIntArrayExtra("indexes");
-        int[] widths = intent.getIntArrayExtra("widths");
-        int[] heights = intent.getIntArrayExtra("heights");
+        id = intent.getIntExtra("id", -1);
+        authors = intent.getStringArrayExtra("authors");
+        authorIndexes = intent.getIntArrayExtra("indexes");
+        widths = intent.getIntArrayExtra("widths");
+        heights = intent.getIntArrayExtra("heights");
 
-        PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
         getSupportActionBar().hide();
 
-        Picasso.with(this).load("https://unsplash.it/500?image=" + id).into(photoView);
+        setPhoto(id);
+
+        PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
+
+        //TODO dodac przeskakiwanie do ostatniego/pierwszego
+        photoView.setOnSingleFlingListener(new OnSingleFlingListener() {
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+                //https://stackoverflow.com/questions/4139288/android-how-to-handle-right-to-left-swipe-gestures
+
+                final int SWIPE_THRESHOLD = 100;
+                final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+                boolean result = false;
+                try {
+                    float diffY = e2.getY() - e1.getY();
+                    float diffX = e2.getX() - e1.getX();
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX > 0) {
+
+                                id--;
+                                setPhoto(id);
+
+                            } else {
+
+                                id++;
+                                setPhoto(id);
+
+                            }
+                            result = true;
+                        }
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                return result;
+            }});
+    }
+
+    public void setPhoto(int newId){
+
+        PhotoView photoView = (PhotoView) findViewById(R.id.photoDetailView);
+
+        Picasso.with(this).load("https://unsplash.it/500?image=" + newId).into(photoView);
 
         TextView label = (TextView) findViewById(R.id.photoDetailDescription);
-        label.setText(authors[id] +" #"+ authorIndexes[id]+ " Size: " + widths[id] + "x" + heights[id]);
-
-        //TODO swipe  -> id +1
+        label.setText(authors[newId] +" #"+ authorIndexes[newId]+ " Size: " + widths[newId] + "x" + heights[newId]);
 
     }
 }
